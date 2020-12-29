@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import styles from './TaskItem.module.css';
-import * as firebase from 'firebase/app';
-import { Grid, ListItem, TextField } from '@material-ui/core';
+import { ListItem, TextField, Grid } from '@material-ui/core';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { db } from './firebase';
-
-interface Props {
+interface PROPS {
   id: string;
   title: string;
-  // kye: string;
 }
 
-const TaskItem: React.FC<Props> = (props) => {
+const TaskItem: React.FC<PROPS> = (props) => {
   const [title, setTitle] = useState(props.title);
 
   const editTask = () => {
@@ -22,6 +19,7 @@ const TaskItem: React.FC<Props> = (props) => {
   const deleteTask = () => {
     db.collection('tasks').doc(props.id).delete();
   };
+
   return (
     <ListItem>
       <h2>{props.title}</h2>
@@ -32,16 +30,16 @@ const TaskItem: React.FC<Props> = (props) => {
           }}
           label='Edit task'
           value={title}
-          onChange={(
-            e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-          ) => setTitle(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
         />
       </Grid>
-      <button onClick={editTask} className={styles.taskitem__icon}>
+      <button className={styles.taskitem__icon} onClick={editTask}>
         <EditOutlinedIcon />
       </button>
-      <button onClick={deleteTask} className={styles.taskitem__icon}>
-        <DeleteOutlinedIcon />
+      <button className={styles.taskitem__icon} onClick={deleteTask}>
+        <DeleteOutlineOutlinedIcon />
       </button>
     </ListItem>
   );
